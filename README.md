@@ -1,3 +1,5 @@
+### This is a copy of the [SPEAR](https://github.com/thehalfspace/Spear) with a use case of simulating earthquake cycles with self-similar stresses and frictional properties. 
+
 # SPEAR: SPectral element based EARthquake cycle simulator 
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![Build Status](https://travis-ci.com/thehalfspace/Spear.svg?branch=master)](https://travis-ci.com/thehalfspace/Spear)
