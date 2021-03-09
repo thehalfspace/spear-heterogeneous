@@ -42,7 +42,7 @@ function setParameters(FZdepth, res)
 
     yr2sec::Int = 365*24*60*60
 
-    Total_time::Int = 200*yr2sec     # Set the total time for simulation here
+    Total_time::Int = 400*yr2sec     # Set the total time for simulation here
 
     CFL::Float64 = 0.6	#	Courant stability number
 
@@ -67,13 +67,13 @@ function setParameters(FZdepth, res)
     #  vs1::Float64 = 0.6*3464
 
     rho2::Float64 = 2670
-    vs2::Float64 = 1.00*vs1
+    vs2::Float64 = 0.60*vs1
 
     ETA = 0.
 
     # Low velocity layer dimensions
     ThickX::Float64 = LX - ceil(FZdepth/dxe)*dxe # ~FZdepth m deep
-    ThickY::Float64 = ceil(1.0e3/dye)*dye   # ~ 0.25*2 km wide
+    ThickY::Float64 = ceil(0.5e3/dye)*dye   # ~ 0.25*2 km wide
 
     #.......................
     # EARTHQUAKE PARAMETERS
@@ -118,7 +118,7 @@ function setParameters(FZdepth, res)
 
     x_out = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0].*(-1e3)  # x coordinate of receiver
     #  y_out = [66.0, 130.0, 198.0, 250.0, 330.0, 396.0]     # y coordinate of receiver
-    y_out = [50.0, 100.0, 200.0, 500.0, 1000.0, 1500.0]     # y coordinate of receiver
+    y_out = [50.0, 500.0, 1000.0, 5000.0, 10000.0, 15000.0]     # y coordinate of receiver
     #  n_receiver = length(x_receiver) # number of receivers
 
     x_out, y_out, out_seis, dist = FindNearestNode(x_out, y_out, x, y)

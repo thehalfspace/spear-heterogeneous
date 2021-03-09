@@ -442,7 +442,8 @@ function main(P)
 
                 #  write(stress, join((tau + P[3].tauo)./1e6, " "), "\n")
                 write(dfsec, join(2*d[P[4].iFlt] .+ P[2].Vpl*t, " "), "\n")
-                write(vel_seis, join(v[out_seis] .+ P[2].Vpl, " "), "\n")
+                write(vel_seis, join(a[out_seis], " "), "\n")
+                #  write(vel_seis, join(v[out_seis] .+ P[2].Vpl, " "), "\n")
             end
 
             if idelevne == 1 && (t - tevneb) > tevne
@@ -450,7 +451,8 @@ function main(P)
                 idd += 1
 
                 write(dfsec, join(2*d[P[4].iFlt] .+ P[2].Vpl*t, " "), "\n")
-                write(vel_seis, join(v[out_seis] .+ P[2].Vpl, " "), "\n")
+                write(vel_seis, join(a[out_seis], " "), "\n")
+                #  write(vel_seis, join(v[out_seis] .+ P[2].Vpl, " "), "\n")
                 tevne = tevne + tevneinc
             end
 
