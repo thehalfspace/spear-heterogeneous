@@ -1,3 +1,6 @@
+using PyCall
+np = pyimport("numpy")
+
 # Linear interpolation function
 function Int1D(P1, P2, val)	
 	Line = P1[1] .+ ( (P2[1] - P1[1])/((P2[2] - P1[2])).*(val .- P1[2]) )	
@@ -56,6 +59,48 @@ function SeffDepth(FltX)
     return Seff
 end
 
+function stress_amplitude(k, ac, H)
+    # Correlation length: ac = 2π/kc
+    kc = 2π/ac
+    τ_k = zeros(size(k))
+    for i in 1:size(k)[1]
+        for j in 1:size(k)[2]
+            if k[i,j] <= kc
+                τ_k[i,j] = kc^(-(1+H))
+            else
+                τ_k[i,j] = k[i,j]^(-(1+H))  
+            end
+        end
+    end
+    return τ_k
+end
+
+# Function to generate self-similar Stresses
+function self_similar_stress(FltX)
+    N = length(FltX)
+    # input values
+    x = LinRange(0.1,100,N)
+    z = LinRange(0.1,100,N)
+    kx, kz = np.meshgrid(x, z)
+
+    # random phase values
+    ϕ = 100 * rand(length(x), length(x))
+
+    # k = 10 .^(kx.^2 .+ kz.^2 .+ ϕ.^2)
+    k = (kx.^2 .+ kz.^2 .+ ϕ.^2) .^ 0.5
+    ac = 5e0    # in meters
+    H = 1       # Test case
+    tau_k = stress_amplitude(k, ac, H)
+    tau_x_z = ifft(tau_k)
+
+    r_tau = abs.(tau_x_z)
+    r_tau2 = r_tau./maximum(r_tau)
+    r_tau3 = r_tau2[:, Int((length(x)+1)/2)]
+
+
+    return (r_tau3 .- mean(r_tau3)).*5e8
+
+end
 
 # Shear stress
 function tauDepth(FltX)
@@ -80,8 +125,10 @@ function tauDepth(FltX)
     tauo[tau_depth3] = Int1D(tP3, tP4, FltX[tau_depth3])
     tauo[tau_depth4] = Int1D(tP4, tP5, FltX[tau_depth4])
 
-    # White noise in stress
-    return (tauo .+ 3e6.*randn(length(tauo)))
+    # Self-similar noise in stress
+    std = self_similar_stress(FltX) 
+
+    return (tauo .+ self_similar_stress(FltX))
 
     # return tauo
 end

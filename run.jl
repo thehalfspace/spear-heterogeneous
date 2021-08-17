@@ -9,7 +9,8 @@
 # 5. Plot results from the scripts folder
 
 using Printf, LinearAlgebra, DelimitedFiles, SparseArrays,
-    AlgebraicMultigrid, StaticArrays, IterativeSolvers, FEMSparse
+    AlgebraicMultigrid, StaticArrays, IterativeSolvers, 
+    FEMSparse, FFTW, PyCall, Statistics
 using Base.Threads
 #  BLAS.set_num_threads(1)
 
@@ -19,10 +20,11 @@ include("$(@__DIR__)/par.jl")	    #	Set Parameters
 resolution = 4
 
 # Output directory to save data
-out_dir = "$(@__DIR__)/data/het_03/"
+out_dir = "$(@__DIR__)/data/het_ss_01/"
 mkpath(out_dir)
 
 P = setParameters(24e3,resolution)      # args = fault zone depth, resolution
+
 
 include("$(@__DIR__)/src/dtevol.jl")
 include("$(@__DIR__)/src/NRsearch.jl")

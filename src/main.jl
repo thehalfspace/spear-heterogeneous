@@ -225,7 +225,7 @@ function main(P)
                 #  dnew = -(kni\rhs)
 
                 # mgcg
-                dnew = cg!(dnew, kni, rhs, Pl=p, tol=1e-6)
+                dnew = cg!(dnew, kni, rhs, Pl=p, reltol=1e-6)
 
                 # update displacement on the medium
                 d[P[4].FltNI] .= dnew
