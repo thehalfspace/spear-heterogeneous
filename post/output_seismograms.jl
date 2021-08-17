@@ -49,34 +49,42 @@ function get_event_index(vel_seis)
 end
 
 
-function vel_seis_plot(vel_seis)
-    event_index = get_event_index(vel_seis)
+function vel_seis_plot(vel_seis_hom, vel_seis_dam)
+    event_index = get_event_index(vel_seis_hom)
 
     # first evet
-    vel_seis_2nd = vel_seis[1:event_index[1],:]
-    #  vel_seis_2nd = vel_seis[event_index[1]+2:event_index[2],:]
+    #  vel_seis_2nd = vel_seis[1:event_index[1],:]
+    event_index = get_event_index(vel_seis_hom)
+    vel_seis_2nd_hom = vel_seis_hom[event_index[1]+2:event_index[2],:]
+    
+    event_index = get_event_index(vel_seis_dam)
+    vel_seis_2nd_dam = vel_seis_dam[event_index[1]+2:event_index[2],:]
    
     # X axis time in seconds
-    x = collect(1:length(vel_seis_2nd[:,1]))./10
+    x_hom = collect(1:length(vel_seis_2nd_hom[:,1]))./10
+    x_dam = collect(1:length(vel_seis_2nd_dam[:,1]))./10
     
     plot_params()
-    fig, ax = plt.subplots(nrows=5, ncols=1, sharex="all", 
+    fig, ax = plt.subplots(nrows=4, ncols=1, sharex="all", 
                            sharey="all", figsize=(6, 9))
     
-    ax[1].plot(x, vel_seis_2nd[:,1], lw = 2.0, label="50 m from fault")
-    ax[2].plot(x, vel_seis_2nd[:,2], lw = 2.0, label="100 m from fault")
-    ax[3].plot(x, vel_seis_2nd[:,3], lw = 2.0, label="200 m from fault")
-    ax[4].plot(x, vel_seis_2nd[:,4], lw = 2.0, label="500 m from fault")
-    ax[5].plot(x, vel_seis_2nd[:,5], lw = 2.0, label="1000 m from fault")
+    ax[1].plot(x_hom, vel_seis_2nd_hom[:,2], lw = 2.0, color="tab:blue", label="500 m from fault")
+    ax[1].plot(x_dam, vel_seis_2nd_dam[:,2], lw = 2.0, color="tab:orange", label="")
+    ax[2].plot(x_hom, vel_seis_2nd_hom[:,3], lw = 2.0, color="tab:blue", label="1000 m from fault")
+    ax[2].plot(x_dam, vel_seis_2nd_dam[:,3], lw = 2.0, color="tab:orange", label="")
+    ax[3].plot(x_hom, vel_seis_2nd_hom[:,4], lw = 2.0, color="tab:blue", label="5000 m from fault")
+    ax[3].plot(x_dam, vel_seis_2nd_dam[:,4], lw = 2.0, color="tab:orange", label="")
+    ax[4].plot(x_hom, vel_seis_2nd_hom[:,5], lw = 2.0, color="tab:blue", label="10000 m from fault")
+    ax[4].plot(x_dam, vel_seis_2nd_dam[:,5], lw = 2.0, color="tab:orange", label="")
+    #  ax[5].plot(x, vel_seis_2nd[:,5], lw = 2.0, label="1000 m from fault")
 
-    plt.xlabel("Time (s)")
-    ax[3].set_ylabel("Velocity (m/s)") 
+    plt.xlabel("Time (s); Orange=damage zone")
+    ax[3].set_ylabel("acceleration (m/s^2)") 
 
     ax[1].legend()
     ax[2].legend()
     ax[3].legend()
     ax[4].legend()
-    ax[5].legend()
     #  plt.tight_layout()
     show()
     

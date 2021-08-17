@@ -44,17 +44,17 @@ function healing_analysis(Vf, alphaa, t, yr2sec)
     lab1 = "Max. slip rate"
     ax.set_ylabel("Max. Slip rate (m/s)")
     ax.set_yscale("log")
-    ax.set_xlim([0, 250])
+    ax.set_xlim([80, 400])
     
     col="tab:red"
     ax2 = ax.twinx()
     
-    ax2.plot(t./yr2sec, alphaa.*100, c=col, lw=2.0, label="Shear modulus ratio")
+    ax2.plot(t./yr2sec, 0*alphaa.*100, c="black", lw=2.0, label="Shear modulus ratio")
     lab2 = "Shear modulus ratio"
     ax.set_xlabel("Time (years)")
     ax2.set_ylabel("Shear Modulus (% of host rock)")
-    ax2.set_ylim([35, 60])
-    #  ax2.set_ylim([75, 100])
+    #  ax2.set_ylim([35, 60])
+    ax2.set_ylim([55, 80])
     ax2.get_xaxis().set_tick_params(color=col)
     ax2.tick_params(axis="x", labelcolor=col)
 
@@ -195,13 +195,13 @@ function eqCyclePlot(sliprate, FltX)
     depth = FltX[indx:end]
 
     plot_params()
-    fig = PyPlot.figure(figsize=(7.2, 4.45))
+    fig = PyPlot.figure(figsize=(9.2, 4.45))
     ax = fig.add_subplot(111)
     
-    c = ax.imshow(value, cmap="inferno", aspect="auto",
-                  norm=matplotlib.colors.LogNorm(vmin=1e-9, vmax=1e0),
+    c = ax.imshow(value, cmap="viridis", aspect="auto",
+                  norm=matplotlib.colors.LogNorm(vmin=1e-10, vmax=1e-2),
                   interpolation="bicubic",
-                  extent=[0,length(sliprate[1,:]), 0,16])
+                  extent=[0,length(sliprate[1,:]), 0,20])
     
     # for stress
     #  c = ax.imshow(value, cmap="inferno", aspect="auto",
@@ -210,6 +210,8 @@ function eqCyclePlot(sliprate, FltX)
                   #  extent=[0,length(seismic_slipvel[1,:]), 0,16])
     
     ax.set_xlabel("Timesteps")
+    ax.set_xticks([])
+    ax.set_yticks([0,5,10,15,20])
     ax.set_ylabel("Depth (km)")
 
     ax.invert_yaxis()
@@ -217,7 +219,7 @@ function eqCyclePlot(sliprate, FltX)
     #   cbar.set_ticks(cbar.get_ticks()[1:2:end])
     
     show()
-    figname = string(path, "mature_sliprate_3.png")
+    figname = string(path, "no_healing_sliprate_3.png")
     fig.savefig(figname, dpi = 300)
     
 end
